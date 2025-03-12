@@ -17,17 +17,17 @@
             <Swiper dir="ltr" :speed="1000" slidesPerView="auto" :spaceBetween="16" class="menu-slides">
                 <SwiperSlide class="!w-fit" v-for="(category, index) in categories" :key="category"
                     :class="category.id === props.search.item_category_id || (category.id === 0 && props.search.item_category_id === '') ? 'pos-group' : ''">
-                        <router-link v-if="index === 0" to="#" @click.prevent="allCategory"
-                            class="w-28 flex flex-col items-center text-center gap-4 py-4 px-3 rounded-lg border-b-2 border-transparent transition hover:bg-primary-light hover:border-primary bg-white">
-                            <img class="h-7 drop-shadow-category" :src="category.thumb" alt="category">
-                            <h3 class="text-xs leading-[16px] font-medium font-rubik">{{ category.name }}</h3>
-                        </router-link>
-                        <router-link v-else to="#" @click.prevent="setCategory(category.id)"
-                            class="w-28 flex flex-col items-center text-center gap-4 py-4 px-3 rounded-lg border-b-2 border-transparent transition hover:bg-primary-light hover:border-primary bg-white">
-                            <img class="h-7 drop-shadow-category" :src="category.thumb" alt="category">
-                            <h3 class="text-xs leading-[16px] font-medium font-rubik">{{ category.name }}</h3>
-                        </router-link>
-                    </SwiperSlide>
+                    <router-link v-if="index === 0" to="#" @click.prevent="allCategory"
+                        class="w-28 flex flex-col items-center text-center gap-4 py-4 px-3 rounded-lg border-b-2 border-transparent transition hover:bg-primary-light hover:border-primary bg-white">
+                        <img class="h-7 drop-shadow-category" :src="category.thumb" alt="category">
+                        <h3 class="text-xs leading-[16px] font-medium font-rubik">{{ category.name }}</h3>
+                    </router-link>
+                    <router-link v-else to="#" @click.prevent="setCategory(category.id)"
+                        class="w-28 flex flex-col items-center text-center gap-4 py-4 px-3 rounded-lg border-b-2 border-transparent transition hover:bg-primary-light hover:border-primary bg-white">
+                        <img class="h-7 drop-shadow-category" :src="category.thumb" alt="category">
+                        <h3 class="text-xs leading-[16px] font-medium font-rubik">{{ category.name }}</h3>
+                    </router-link>
+                </SwiperSlide>
             </Swiper>
         </div>
         <ItemComponent :items="items" />
@@ -75,7 +75,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(cart, index) in carts" >
+                <tr v-for="(cart, index) in carts">
                     <td class="pl-3 py-3 last:pr-3 align-top border-b border-[#EFF0F6] rtl:pr-3">
                         <button @click.prevent="deleteCartItem(index)">
                             <i class="lab lab-trash-line-2 font-fill-danger"></i>
@@ -86,8 +86,8 @@
                         <p v-if="Object.keys(cart.item_variations.variations).length !== 0">
                             <span v-for="(variation, variationName) in cart.item_variations.names">
                                 <span class="capitalize text-[10px] leading-4 font-rubik text-heading">{{
-        variationName
-    }}:
+                                    variationName
+                                }}:
                                     &nbsp;</span>
                                 <span class="capitalize text-[10px] leading-4 font-rubik">{{ variation }}, &nbsp;</span>
                             </span>
@@ -127,9 +127,9 @@
                     </td>
                     <td class="pl-3 py-3 last:pr-3 align-top border-b border-[#EFF0F6] text-xs font-rubik text-heading">
                         {{
-        currencyFormat(cart.total, setting.site_digit_after_decimal_point,
-            setting.site_default_currency_symbol, setting.site_currency_position)
-    }}
+                            currencyFormat(cart.total, setting.site_digit_after_decimal_point,
+                                setting.site_default_currency_symbol, setting.site_currency_position)
+                        }}
                     </td>
                 </tr>
             </tbody>
@@ -164,10 +164,11 @@
                 </div>
             </div>
 
-            <div class="flex h-[38px] mt-2" v-if="carts.length > 0 && checkoutProps.form.pos_payment_method !== posPaymentMethodEnum.CASH">
-                <input v-model="checkoutProps.form.pos_payment_note" type="text" 
-                :placeholder="checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD ? $t('label.enter_card_last_4_digits') : 
-                checkoutProps.form.pos_payment_method === posPaymentMethodEnum.MOBILE_BANKING ?  $t('label.enter_transaction_id') :   $t('label.enter_payment_note')"
+            <div class="flex h-[38px] mt-2"
+                v-if="carts.length > 0 && checkoutProps.form.pos_payment_method !== posPaymentMethodEnum.CASH">
+                <input v-model="checkoutProps.form.pos_payment_note" type="text"
+                    :placeholder="checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD ? $t('label.enter_card_last_4_digits') :
+                        checkoutProps.form.pos_payment_method === posPaymentMethodEnum.MOBILE_BANKING ? $t('label.enter_transaction_id') : $t('label.enter_payment_note')"
                     class="w-full h-full border px-3 border-[#EFF0F6]">
             </div>
             <ul class="flex flex-col gap-1.5 mb-4 mt-4">
@@ -177,18 +178,18 @@
                     </span>
                     <span class="text-sm font-rubik capitalize leading-6 text-[#2E2F38]">
                         {{
-        currencyFormat(subtotal, setting.site_digit_after_decimal_point,
-            setting.site_default_currency_symbol, setting.site_currency_position)
-    }}
+                            currencyFormat(subtotal, setting.site_digit_after_decimal_point,
+                                setting.site_default_currency_symbol, setting.site_currency_position)
+                        }}
                     </span>
                 </li>
                 <li class="flex items-center justify-between">
                     <span class="text-sm font-rubik capitalize leading-6">{{ $t("label.discount") }}</span>
                     <span class="text-sm font-rubik capitalize leading-6">{{
-        currencyFormat(posDiscount,
-            setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
-            setting.site_currency_position)
-    }}</span>
+                        currencyFormat(posDiscount,
+                            setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
+                            setting.site_currency_position)
+                    }}</span>
                 </li>
                 <li class="flex items-center justify-between">
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#2E2F38]">
@@ -196,13 +197,29 @@
                     </span>
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#2E2F38]">
                         {{
-        currencyFormat(subtotal - posDiscount,
-            setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
-            setting.site_currency_position)
-    }}
+                            currencyFormat(subtotal - posDiscount,
+                                setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
+                                setting.site_currency_position)
+                        }}
+                    </span>
+                </li>
+
+                <!-- Additional total for card payments -->
+                <li v-if="checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD"
+                    class="flex items-center justify-between bg-[#F8F9FA] p-2 rounded-lg">
+                    <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#D9534F]">
+                        {{ $t("label.card_total") }}
+                    </span>
+                    <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#D9534F]">
+                        {{
+                            currencyFormat(cardTotal,
+                                setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
+                                setting.site_currency_position)
+                        }}
                     </span>
                 </li>
             </ul>
+
             <div class="flex items-center justify-center gap-6" v-if="carts.length > 0">
                 <button @click.prevent="resetCart"
                     class="capitalize text-sm font-medium leading-6 font-rubik w-full text-center rounded-3xl py-2 text-white bg-[#FB4E4E]">
@@ -221,10 +238,10 @@
         <i class="lab lab-bag-2 lab-font-size-13 text-white"></i>
         <span class="text-base font-medium font-rubik text-white">
             {{ totalItems() }} {{ $t('label.items') }} - {{
-        currencyFormat(subtotal - posDiscount,
-            setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
-            setting.site_currency_position)
-    }}
+                currencyFormat(subtotal - posDiscount,
+                    setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
+                    setting.site_currency_position)
+            }}
         </span>
     </button>
 
@@ -277,8 +294,8 @@ export default {
                     total: 0,
                     order_type: orderTypeEnum.POS,
                     is_advance_order: isAdvanceOrderEnum.NO,
-                    pos_payment_method:posPaymentMethodEnum.CASH,
-                    pos_payment_note:'',
+                    pos_payment_method: posPaymentMethodEnum.CASH,
+                    pos_payment_note: '',
                     source: sourceEnum.POS,
                     address_id: null,
                     items: []
@@ -441,6 +458,11 @@ export default {
         posDiscount: function () {
             return this.$store.getters['posCart/discount'];
         },
+        cardTotal() {
+            let total = this.subtotal - this.posDiscount;
+            let cardSurcharge = 0.02 * total; // Example: 2% surcharge for card payments
+            return total + cardSurcharge;
+        }
     },
     mounted() {
         this.itemCategories();
@@ -567,8 +589,8 @@ export default {
             this.checkoutProps.form.subtotal = this.subtotal;
             this.checkoutProps.form.total = parseFloat(this.subtotal - this.checkoutProps.form.discount).toFixed(this.setting.site_digit_after_decimal_point);
             this.checkoutProps.form.items = [];
-            this.checkoutProps.form.pos_payment_note = this.checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CASH ? 
-                                                         null : this.checkoutProps.form.pos_payment_note;
+            this.checkoutProps.form.pos_payment_note = this.checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CASH ?
+                null : this.checkoutProps.form.pos_payment_note;
             _.forEach(this.carts, (item, index) => {
                 let item_variations = [];
                 if (Object.keys(item.item_variations.variations).length > 0) {
