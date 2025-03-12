@@ -28,3 +28,4 @@ package-lock.json
 _ide_helper.php
 _ide_helper_models.php
 storage/media-library/
+public/file/service-account-file.json
