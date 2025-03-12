@@ -1,5 +1,7 @@
 /node_modules
 /public/hot
+/public/storage
+/storage/*.key
 /vendor
 .env
 .env.backup
@@ -25,4 +27,5 @@ public/js/*
 package-lock.json
 _ide_helper.php
 _ide_helper_models.php
+storage/media-library/
 public/file/service-account-file.json
