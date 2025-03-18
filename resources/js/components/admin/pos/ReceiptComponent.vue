@@ -15,9 +15,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center pb-3.5 border-b border-dashed border-gray-400">
-                    <h3 class="text-2xl font-bold mb-1">{{ company.company_name }}</h3>
-                    <h4 class="text-sm font-normal">{{ branch.address }}</h4>
-                    <h5 class="text-sm font-normal">Tel: {{ branch.phone }}</h5>
+                    <h4 class="text-2xl font-bold mb-1">{{ company.company_name }}</h4>
                 </div>
 
                 <table class="w-full my-1.5">
@@ -56,7 +54,8 @@
                             <td class="text-left font-normal align-top py-1">
                                 <div class="flex items-center justify-between">
                                     <h4 class="text-sm font-normal capitalize">{{ item.item_name }}</h4>
-                                    <p class="text-xs leading-5 text-heading">{{ item.total_without_tax_currency_price }}
+                                    <p class="text-xs leading-5 text-heading">{{ item.total_without_tax_currency_price
+                                        }}
                                     </p>
                                 </div>
                                 <p v-if="Object.keys(item.item_variations).length !== 0"
@@ -74,7 +73,8 @@
                                         <span v-if="index + 1 < item.item_extras.length">, </span>
                                     </span>
                                 </p>
-                                <p v-if="item.instruction" class="text-xs leading-5 font-normal text-heading max-w-[200px]">
+                                <p v-if="item.instruction"
+                                    class="text-xs leading-5 font-normal text-heading max-w-[200px]">
                                     {{ $t('label.instruction') }}: {{ item.instruction }}
                                 </p>
 
@@ -94,22 +94,17 @@
                     <table class="w-full">
                         <tbody>
                             <tr>
-                                <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.subtotal') }}:</td>
+                                <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.subtotal') }}:
+                                </td>
                                 <td class="text-xs text-right py-0.5 text-heading">{{
                                     order.subtotal_without_tax_currency_price
-                                }}</td>
+                                    }}</td>
                             </tr>
                             <tr>
-                                <td class="text-xs text-left py-0.5 uppercase text-heading">
-                                    {{ $t('label.total_tax') }}:
+                                <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount') }}:
                                 </td>
-                                <td class="text-xs text-right py-0.5 text-heading">
-                                    {{ order.total_tax_currency_price }}
+                                <td class="text-xs text-right py-0.5 text-heading">{{ order.discount_currency_price }}
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount') }}:</td>
-                                <td class="text-xs text-right py-0.5 text-heading">{{ order.discount_currency_price }}</td>
                             </tr>
 
                             <tr>
@@ -142,7 +137,9 @@
                     <h5 class="text-[8px] font-normal text-left w-[46px] leading-[10px]">
                         {{ $t('label.powered_by') }}
                     </h5>
-                    <h6 class="text-xs font-normal leading-4">{{ company.company_name }}</h6>
+                    <h6 class="text-xs font-normal leading-4">
+                        Wilson Cloud LTD - Visit wilson-cloud.store
+                    </h6>
                 </div>
             </div>
         </div>
@@ -195,6 +192,19 @@ export default {
         reset: function () {
             appService.modalHide();
         },
+        autoPrintTwice() {
+            setTimeout(() => {
+                this.$nextTick(() => {
+                    window.print();
+                    setTimeout(() => {
+                        window.print();
+                        setTimeout(() => {
+                            this.reset();
+                        }, 500); // Delay to ensure modal closes after printing
+                    }, 500); // Delay between two prints
+                });
+            }, 500); // Initial delay before first print
+        }
     },
     directives: {
         print

@@ -265,7 +265,7 @@
         </span>
     </button>
 
-    <ReceiptComponent :order="order" />
+    <ReceiptComponent ref="receiptComponent" :order="order" />
 </template>
 <script>
 import LoadingComponent from "../components/LoadingComponent";
@@ -717,6 +717,10 @@ export default {
                         alertService.error(error.response.data.message);
                     });
                     appService.modalShow('#receiptModal');
+                    // Wait for 5 seconds and then auto print twice
+                    setTimeout(() => {
+                        this.$refs.receiptComponent.autoPrintTwice();
+                    }, 5000);
                 }).catch((err) => {
                     this.loading.isActive = false;
                     if (typeof err.response.data.errors === 'object') {
