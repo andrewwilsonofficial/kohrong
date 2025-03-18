@@ -3,6 +3,7 @@
 return [
     'label'   => [
         'name'             => 'Name',
+        'khmer_name'       => 'Khmer Name',
         'email'            => 'Email',
         'phone'            => 'Phone',
         'item_category_id' => 'Category',

@@ -20,6 +20,7 @@ class ItemService
     public $item;
     protected $itemFilter = [
         'name',
+        'khmer_name',
         'slug',
         'item_category_id',
         'price',
@@ -115,6 +116,7 @@ class ItemService
                             $variationIdsArray[] = $variation['id'];
                             ItemVariation::where('id', $variation['id'])->update([
                                 'name'             => $variation['name'],
+                                'khmer_name'       => $variation['khmer_name'],
                                 'price' => $variation['price'],
                             ]);
                         } else {

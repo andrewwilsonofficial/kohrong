@@ -32,6 +32,7 @@ class ItemRequest extends FormRequest
                 'max:190',
                 Rule::unique("items", "name")->whereNull('deleted_at')->ignore($this->route('item.id'))
             ],
+            'khmer_name'       => ['nullable', 'string', 'max:190'],
             'item_category_id' => ['required', 'numeric', 'not_in:0'],
             'tax_id'           => ['nullable', 'numeric', 'not_in:0'],
             'item_type'        => ['required', 'numeric', 'not_in:0'],

@@ -47,6 +47,7 @@ class ItemExport implements FromCollection, WithHeadings
     {
         return [
             trans('all.label.name'),
+            trans('all.label.khmer_name'),
             trans('all.label.item_category_id'),
             trans('all.label.price'),
             trans('all.label.item_type'),

@@ -18,6 +18,7 @@ class Item extends Model implements HasMedia
     protected $table = "items";
     protected $fillable = [
         'name',
+        'khmer_name',
         'item_category_id',
         'slug',
         'tax_id',

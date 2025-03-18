@@ -28,6 +28,7 @@ class ItemImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFail
         if ($category_id) {
             return new Item([
                 'name' => $this->sanitizeInput($row['name'] ?? ''),
+                'khmer_name' => $this->sanitizeInput($row['khmer_name'] ?? ''),
                 'item_category_id' => $category_id,
                 'slug' => Str::slug($this->sanitizeInput($row['name'])),
                 'tax_id' => $this->getTaxId($row['tax']),

@@ -16,6 +16,12 @@
                             id="name" class="db-field-control">
                         <small class="db-field-alert" v-if="errors.name">{{ errors.name[0] }}</small>
                     </div>
+                    <div class="form-col-12 sm:form-col-6">
+                        <label for="khmer_name" class="db-field-title required">{{ $t("label.khmer_name") }}</label>
+                        <input v-model="props.form.khmer_name" v-bind:class="errors.khmer_name ? 'invalid' : ''" type="text"
+                            id="khmer_name" class="db-field-control">
+                        <small class="db-field-alert" v-if="errors.khmer_name">{{ errors.khmer_name[0] }}</small>
+                    </div>
 
                     <div class="form-col-12 sm:form-col-6">
                         <label for="price" class="db-field-title required">{{ $t("label.price") }}</label>
@@ -228,6 +234,7 @@ export default {
             this.errors = {};
             this.$props.props.form = {
                 name: "",
+                khmer_name: "",
                 price: "",
                 description: "",
                 caution: "",
@@ -246,6 +253,7 @@ export default {
             try {
                 const fd = new FormData();
                 fd.append('name', this.props.form.name);
+                fd.append('khmer_name', this.props.form.khmer_name);
                 fd.append('price', this.props.form.price);
                 fd.append('item_category_id', this.props.form.item_category_id == null ? '' : this.props.form.item_category_id);
                 fd.append('tax_id', this.props.form.tax_id == null ? '' : this.props.form.tax_id);
@@ -269,6 +277,7 @@ export default {
                     alertService.successFlip((tempId === null ? 0 : 1), this.$t('menu.items'));
                     this.props.form = {
                         name: "",
+                        khmer_name: "",
                         price: "",
                         description: "",
                         caution: "",

@@ -35,6 +35,12 @@
                             }}</label>
                             <input id="name" v-model="props.search.name" type="text" class="db-field-control" />
                         </div>
+                        <div class="col-12 sm:col-6 md:4 xl:3">
+                            <label for="khmerName" class="db-field-title after:hidden">{{
+                                $t("label.khmer_name")
+                            }}</label>
+                            <input id="khmerName" v-model="props.search.khmer_name" type="text" class="db-field-control" />
+                        </div>
                         <div class="col-12 sm:col-6 md:col-4 xl:col-3">
                             <label for="price" class="db-field-title after:hidden">{{
                                 $t("label.price")
@@ -257,6 +263,7 @@ export default {
             props: {
                 form: {
                     name: "",
+                    khmer_name: "",
                     price: "",
                     description: "",
                     caution: "",
@@ -273,6 +280,7 @@ export default {
                     order_column: 'id',
                     order_type: 'desc',
                     name: "",
+                    khmer_name: "",
                     price: "",
                     item_category_id: null,
                     status: null,
@@ -339,6 +347,7 @@ export default {
             this.props.search.paginate = 1;
             this.props.search.page = 1;
             this.props.search.name = "";
+            this.props.search.khmer_name = "";
             this.props.search.price = "";
             this.props.search.item_category_id = null;
             this.props.search.status = null;
@@ -364,6 +373,7 @@ export default {
             this.props.errors = {};
             this.props.form = {
                 name: item.name,
+                khmer_name: item.khmer_name,
                 price: item.flat_price,
                 description: item.description,
                 caution: item.caution,
