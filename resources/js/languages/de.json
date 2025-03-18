@@ -711,6 +711,7 @@
         "file_update_success" : "Die Dateiaktualisierung wurde erfolgreich durchgeführt",
         "for_quick_demo" : "Für eine schnelle Demo-Anmeldung klicken Sie unten",
         "please_check_your_order_list": "Bitte überprüfen Sie Ihre Bestellliste.",
-        "table_scan" : "Snel bestelling scannen en verzenden"
+        "table_scan" : "Snel bestelling scannen en verzenden",
+        "token_required": "Token is vereist"
     }
 }

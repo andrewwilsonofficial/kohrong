@@ -87,7 +87,7 @@
                             <span v-for="(variation, variationName) in cart.item_variations.names">
                                 <span class="capitalize text-[10px] leading-4 font-rubik text-heading">{{
                                     variationName
-                                    }}:
+                                }}:
                                     &nbsp;</span>
                                 <span class="capitalize text-[10px] leading-4 font-rubik">{{ variation }}, &nbsp;</span>
                             </span>
@@ -211,7 +211,7 @@
                                 setting.site_default_currency_symbol,
                                 setting.site_currency_position
                             )
-                        }} - 
+                        }} -
                         {{
                             currencyFormat(
                                 (subtotal - posDiscount) * 4000,
@@ -240,6 +240,14 @@
                 </li>
             </ul>
 
+            <div class="flex items-center justify-center gap-6 mb-4" v-if="carts.length > 0">
+                <div class="flex gap-2">
+                    <label v-for="option in receiptOptions" :key="option.value" class="flex items-center">
+                        <input type="radio" :value="option.value" v-model="selectedReceipts" class="mr-1" />
+                        {{ option.label }}
+                    </label>
+                </div>
+            </div>
             <div class="flex items-center justify-center gap-6" v-if="carts.length > 0">
                 <button @click.prevent="resetCart"
                     class="capitalize text-sm font-medium leading-6 font-rubik w-full text-center rounded-3xl py-2 text-white bg-[#FB4E4E]">
@@ -264,7 +272,15 @@
             }}
         </span>
     </button>
+    <style>
+        .db-main {
+            padding-top: 20px !important;
+        }
 
+        .db-sidebar {
+            top: 1rem !important;
+        }
+    </style>
     <ReceiptComponent ref="receiptComponent" :order="order" />
 </template>
 <script>
@@ -300,6 +316,13 @@ export default {
             loading: {
                 isActive: false,
             },
+            selectedReceipts: 2, // Default selection
+            receiptOptions: [
+                { label: "1", value: 1 },
+                { label: "2", value: 2 },
+                { label: "3", value: 3 },
+                { label: "None", value: 0 },
+            ],
             order: {},
             discount: null,
             checkoutProps: {
@@ -633,6 +656,13 @@ export default {
             this.checkoutProps.form.items = [];
             this.checkoutProps.form.pos_payment_note = this.checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CASH ?
                 null : this.checkoutProps.form.pos_payment_note;
+
+            if (!this.checkoutProps.form.token) {
+                alertService.error(this.$t('message.token_required'));
+                this.loading.isActive = false;
+                return;
+            }
+
             _.forEach(this.carts, (item, index) => {
                 let item_variations = [];
                 if (Object.keys(item.item_variations.variations).length > 0) {
@@ -716,11 +746,13 @@ export default {
                         this.loading.isActive = false;
                         alertService.error(error.response.data.message);
                     });
-                    appService.modalShow('#receiptModal');
-                    // Wait for 5 seconds and then auto print twice
-                    setTimeout(() => {
-                        this.$refs.receiptComponent.autoPrintTwice();
-                    }, 5000);
+                    if (this.selectedReceipts !== 0) {
+                        appService.modalShow('#receiptModal');
+                        setTimeout(() => {
+                            this.$refs.receiptComponent.autoPrint(this.selectedReceipts);
+                            this.selectedReceipts = 2;
+                        }, 500);
+                    }
                 }).catch((err) => {
                     this.loading.isActive = false;
                     if (typeof err.response.data.errors === 'object') {

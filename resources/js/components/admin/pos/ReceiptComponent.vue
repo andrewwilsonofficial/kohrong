@@ -2,7 +2,7 @@
     <div id="receiptModal" class="modal">
         <div class="modal-dialog max-w-[340px] rounded-none" id="print" :dir="direction">
             <div class="modal-header hidden-print">
-                <button type="button" @click="reset"
+                <!-- <button type="button" @click="reset"
                     class="modal-close flex items-center justify-center gap-1.5 py-2 px-4 rounded bg-[#FB4E4E]">
                     <i class="lab lab-back-bold lab-font-size-16 text-white"></i>
                     <span class="text-xs leading-5 capitalize text-white">{{ $t('button.close') }}</span>
@@ -11,7 +11,7 @@
                     class="flex items-center justify-center gap-1.5 py-2 px-4 rounded bg-[#1AB759]">
                     <i class="lab lab-print-bold lab-font-size-16 text-white"></i>
                     <span class="text-xs leading-5 capitalize text-white">{{ $t('button.print_invoice') }}</span>
-                </button>
+                </button> -->
             </div>
             <div class="modal-body">
                 <div class="text-center pb-3.5 border-b border-dashed border-gray-400">
@@ -55,7 +55,7 @@
                                 <div class="flex items-center justify-between">
                                     <h4 class="text-sm font-normal capitalize">{{ item.item_name }}</h4>
                                     <p class="text-xs leading-5 text-heading">{{ item.total_without_tax_currency_price
-                                        }}
+                                    }}
                                     </p>
                                 </div>
                                 <p v-if="Object.keys(item.item_variations).length !== 0"
@@ -98,7 +98,7 @@
                                 </td>
                                 <td class="text-xs text-right py-0.5 text-heading">{{
                                     order.subtotal_without_tax_currency_price
-                                    }}</td>
+                                }}</td>
                             </tr>
                             <tr>
                                 <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount') }}:
@@ -187,23 +187,35 @@ export default {
     },
     mounted() {
         this.$store.dispatch("company/lists").then().catch();
+        const element = this.$el.querySelector('.fa-align-left');
+        if (element) {
+            element.classList.remove('fa-align-left');
+            element.classList.add('fa-bars');
+        }
+        const sidebar = this.$el.querySelector('.db-sidebar');
+        if (sidebar) {
+            sidebar.classList.add('active');
+        }
+        const main = this.$el.querySelector('.db-main');
+        if (main) {
+            main.classList.add('expand');
+        }
     },
     methods: {
         reset: function () {
             appService.modalHide();
         },
-        autoPrintTwice() {
-            setTimeout(() => {
-                this.$nextTick(() => {
+        autoPrint(totalPrint = 2) {
+            let printCount = 0;
+            const printInterval = setInterval(() => {
+                if (printCount < totalPrint) {
                     window.print();
-                    setTimeout(() => {
-                        window.print();
-                        setTimeout(() => {
-                            this.reset();
-                        }, 500); // Delay to ensure modal closes after printing
-                    }, 500); // Delay between two prints
-                });
-            }, 500); // Initial delay before first print
+                    printCount++;
+                } else {
+                    clearInterval(printInterval);
+                    this.reset();
+                }
+            }, 500);
         }
     },
     directives: {

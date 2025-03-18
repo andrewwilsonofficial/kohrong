@@ -710,6 +710,7 @@
         "file_update_success" : "The file update successfully",
         "for_quick_demo": "For quick demo login click below",
         "please_check_your_order_list" : "Please check your order list.",
-        "table_scan" : "Please scan & send quick order"
+        "table_scan" : "Please scan & send quick order",
+        "token_required": "Token is required"
     }
 }
