@@ -564,7 +564,8 @@
         "total_delivery_charges" : "Totale bezorgkosten",
         "takeaway_time" : "Afhaaltijd",
         "msg91_template_variable": "MSG91-sjabloonvariabele",
-        "license_code": "licentiecode"
+        "license_code": "licentiecode",
+        "select_number_of_receipts": "Selecteer aantal bonnen"
     },
     "button": {
         "add": "Hinzufügen",

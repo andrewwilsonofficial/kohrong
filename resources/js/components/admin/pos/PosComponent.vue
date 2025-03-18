@@ -241,11 +241,14 @@
             </ul>
 
             <div class="flex items-center justify-center gap-6 mb-4" v-if="carts.length > 0">
-                <div class="flex gap-2">
-                    <label v-for="option in receiptOptions" :key="option.value" class="flex items-center">
-                        <input type="radio" :value="option.value" v-model="selectedReceipts" class="mr-1" />
-                        {{ option.label }}
-                    </label>
+                <div class="flex flex-col items-center gap-2">
+                <span>{{ $t('label.select_number_of_receipts') }}</span>
+                    <div class="flex gap-2">
+                        <label v-for="option in receiptOptions" :key="option.value" class="flex items-center">
+                            <input type="radio" :value="option.value" v-model="selectedReceipts" class="mr-1" />
+                            {{ option.label }}
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="flex items-center justify-center gap-6" v-if="carts.length > 0">

@@ -563,7 +563,8 @@
         "total_delivery_charges" : "Total delivery charges",
         "takeaway_time" : "Takeaway time",
         "msg91_template_variable": "MSG91 Template Variable",
-        "license_code": "License Code"
+        "license_code": "License Code",
+        "select_number_of_receipts": "Select number of receipts"
     },
     "button": {
         "add": "Add",

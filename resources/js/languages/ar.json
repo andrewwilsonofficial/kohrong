@@ -566,7 +566,8 @@
         "total_delivery_charges" : "إجمالي رسوم التوصيل",
         "takeaway_time" : "وقت الوجبات الجاهزة",
         "msg91_template_variable": "متغير قالب MSG91",
-        "license_code": "رمز الترخيص"
+        "license_code": "رمز الترخيص",
+        "select_number_of_receipts": "حدد عدد الإيصالات"
     },
     "button": {
         "add": "إضافة",

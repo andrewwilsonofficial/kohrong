@@ -564,7 +564,8 @@
         "total_delivery_charges" : "মোট ডেলিভারি চার্জ",
         "takeaway_time" : "টেকঅ্যাওয়ে সময়",
         "msg91_template_variable": "MSG91 টেমপ্লেট ভেরিয়েবল",
-        "license_code": "লাইসেন্স কোড"
+        "license_code": "লাইসেন্স কোড",
+        "select_number_of_receipts": "রিসিট সংখ্যা নির্বাচন করুন"
     },
     "button": {
         "add": "যোগ করুন",
