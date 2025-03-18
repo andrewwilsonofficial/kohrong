@@ -206,9 +206,7 @@
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#2E2F38]">
                         {{
                             currencyFormat(
-                                checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD
-                                    ? (subtotal - posDiscount) * 1.03
-                                    : subtotal - posDiscount,
+                                subtotal - posDiscount,
                                 setting.site_digit_after_decimal_point,
                                 setting.site_default_currency_symbol,
                                 setting.site_currency_position
@@ -216,9 +214,7 @@
                         }} - 
                         {{
                             currencyFormat(
-                                (checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD
-                                    ? (subtotal - posDiscount) * 1.03
-                                    : subtotal - posDiscount) * 4000,
+                                (subtotal - posDiscount) * 4000,
                                 setting.site_digit_after_decimal_point,
                                 'KHR',
                                 'suffix'
@@ -233,9 +229,12 @@
                     </span>
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#D9534F]">
                         {{
-                            currencyFormat(cardTotal,
-                                setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
-                                setting.site_currency_position)
+                            currencyFormat(
+                                (subtotal - posDiscount) * 1.03,
+                                setting.site_digit_after_decimal_point,
+                                setting.site_default_currency_symbol,
+                                setting.site_currency_position
+                            )
                         }}
                     </span>
                 </li>
