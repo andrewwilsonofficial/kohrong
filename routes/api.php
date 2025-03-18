@@ -399,6 +399,7 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
         Route::get('/export', [PosOrderController::class, 'export']);
         Route::post('/change-status/{order}', [PosOrderController::class, 'changeStatus']);
         Route::post('/change-payment-status/{order}', [PosOrderController::class, 'changePaymentStatus']);
+        Route::get('/check-coupon', [PosOrderController::class, 'checkCoupon']);
     });
 
     Route::prefix('table-order')->name('tableOrder.')->group(function () {

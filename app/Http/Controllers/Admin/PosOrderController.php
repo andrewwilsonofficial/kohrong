@@ -12,7 +12,8 @@ use App\Http\Requests\PaginateRequest;
 use App\Http\Requests\OrderStatusRequest;
 use App\Http\Requests\PaymentStatusRequest;
 use App\Http\Resources\OrderDetailsResource;
-
+use Illuminate\Http\Request;
+use App\Models\Coupon;
 
 class PosOrderController extends AdminController
 {
@@ -93,5 +94,14 @@ class PosOrderController extends AdminController
         } catch (Exception $exception) {
             return response(['status' => false, 'message' => $exception->getMessage()], 422);
         }
+    }
+
+    public function checkCoupon(Request $request)
+    {
+        $coupon = Coupon::where('code', $request->code)->first();
+        if ($coupon) {
+            return response()->json(['status' => true, 'coupon' => $coupon]);
+        }
+        return response()->json(['status' => false, 'message' => 'Coupon not found']);
     }
 }

@@ -87,7 +87,7 @@
                             <span v-for="(variation, variationName) in cart.item_variations.names">
                                 <span class="capitalize text-[10px] leading-4 font-rubik text-heading">{{
                                     variationName
-                                }}:
+                                    }}:
                                     &nbsp;</span>
                                 <span class="capitalize text-[10px] leading-4 font-rubik">{{ variation }}, &nbsp;</span>
                             </span>
@@ -151,6 +151,14 @@
                     {{ $t('button.apply') }}
                 </button>
             </div>
+            <div class="flex h-[38px] mt-2" v-if="carts.length > 0">
+                <input v-model="couponCode" type="text" :placeholder="$t('label.enter_coupon_code')"
+                    class="w-full h-full border px-3 border-[#EFF0F6]">
+                <button @click.prevent="applyCoupon" type="submit"
+                    class="flex-shrink-0 w-16 h-full text-sm font-medium font-rubik capitalize ltr:rounded-tr-lg ltr:rounded-br-lg rtl:rounded-tl-lg rtl:rounded-bl-lg text-white bg-[#008BBA]">
+                    {{ $t('button.apply') }}
+                </button>
+            </div>
             <small class="db-field-alert" v-if="discountErrorMessage">{{ discountErrorMessage }}</small>
             <div class="flex h-[38px] mt-2" v-if="carts.length > 0">
                 <div class="w-full db-field-down-arrow">
@@ -197,14 +205,27 @@
                     </span>
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#2E2F38]">
                         {{
-                            currencyFormat(subtotal - posDiscount,
-                                setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
-                                setting.site_currency_position)
+                            currencyFormat(
+                                checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD
+                                    ? (subtotal - posDiscount) * 1.03
+                                    : subtotal - posDiscount,
+                                setting.site_digit_after_decimal_point,
+                                setting.site_default_currency_symbol,
+                                setting.site_currency_position
+                            )
+                        }} - 
+                        {{
+                            currencyFormat(
+                                (checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD
+                                    ? (subtotal - posDiscount) * 1.03
+                                    : subtotal - posDiscount) * 4000,
+                                setting.site_digit_after_decimal_point,
+                                'KHR',
+                                'suffix'
+                            )
                         }}
                     </span>
                 </li>
-
-                <!-- Additional total for card payments -->
                 <li v-if="checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CARD"
                     class="flex items-center justify-between bg-[#F8F9FA] p-2 rounded-lg">
                     <span class="text-sm font-medium font-rubik capitalize leading-6 text-[#D9534F]">
@@ -579,6 +600,28 @@ export default {
 
                 }
             }
+        },
+        applyCoupon: function () {
+            this.loading.isActive = true;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../check-coupon", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                code: this.couponCode
+            }));
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        this.checkoutProps.form.discount = parseFloat(xhr.response).toFixed(this.setting.site_digit_after_decimal_point);
+                        this.$store.dispatch('posCart/discount', this.checkoutProps.form.discount).then().catch();
+                    } else {
+                        alertService.error(xhr.response);
+                    }
+                    this.loading.isActive = false;
+                }
+            };
+
+            this.loading.isActive = false;
         },
         resetCart: function () {
             this.$store.dispatch('posCart/resetCart').then(res => {
