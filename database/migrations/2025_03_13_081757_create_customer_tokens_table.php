@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('customer_tokens', function (Blueprint $table) {
             $table->id();
             $table->string('customer_name')->nullable();
-            $table->string('code')->unique();
+            $table->string('code', 191)->unique();
             $table->integer('total_beers')->default(0);
             $table->integer('total_left')->default(0);
             $table->date('start_date');
