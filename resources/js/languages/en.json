@@ -666,6 +666,9 @@
         "something_wrong": "Something Wrong."
     },
     "message": {
+        "invalid_coupon": "Invalid Coupon",
+        "discount_limit_exceeded": "Discount Limit Exceeded",
+        "coupon_already_applied": "Coupon Already Applied",
         "pagination_label": "Showing {from} to {to} of {total} entries",
         "password_update": "Password Updated Successfully.",
         "photo_update": "Photo Updated Successfully.",

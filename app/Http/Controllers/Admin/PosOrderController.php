@@ -44,10 +44,11 @@ class PosOrderController extends AdminController
     }
 
     public function show(
-        Order $order
+        Order $order,
+        Coupon $coupon
     ): \Illuminate\Http\Response | OrderDetailsResource | \Illuminate\Contracts\Foundation\Application | \Illuminate\Contracts\Routing\ResponseFactory {
         try {
-            return new OrderDetailsResource($this->orderService->show($order, false));
+            return new OrderDetailsResource($this->orderService->show($order, false, $coupon));
         } catch (Exception $exception) {
             return response(['status' => false, 'message' => $exception->getMessage()], 422);
         }
@@ -98,7 +99,7 @@ class PosOrderController extends AdminController
 
     public function checkCoupon(Request $request)
     {
-        $coupon = Coupon::where('code', $request->code)->first();
+        $coupon = Coupon::where('code', $request->code)->where('status', 'active')->where('amount_left', '>', 0)->where('start_date', '<=', now())->where('end_date', '>=', now())->first();
         if ($coupon) {
             return response()->json(['status' => true, 'coupon' => $coupon]);
         }

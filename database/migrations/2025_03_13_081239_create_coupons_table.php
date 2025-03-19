@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             $table->string('code', 191)->unique();
-            $table->string('type');
-            $table->string('value');
+            $table->enum('type', ['fixed', 'percentage']);
             $table->decimal('amount');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->decimal('amount_left')->default(0);
+            $table->enum('customer_type', ['guest', 'walkin']);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

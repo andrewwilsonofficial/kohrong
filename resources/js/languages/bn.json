@@ -667,6 +667,9 @@
         "something_wrong": "কিছু ভুল।"
     },
     "message": {
+        "invalid_coupon": "অবৈধ কুপন",
+        "discount_limit_exceeded": "ডিসকাউন্ট সীমা অতিক্রম করেছে",
+        "coupon_already_applied": "কুপন ইতিমধ্যে প্রয়োগ করা হয়েছে",
         "pagination_label": "{total} টি এন্ট্রির মধ্যে {from} থেকে {to} পর্যন্ত দেখানো হচ্ছে",
         "password_update": "পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে।",
         "photo_update": "ছবিটি সফলভাবে আপডেট করা হয়েছে।",

@@ -31,6 +31,7 @@ use Smartisan\Settings\Facades\Settings;
 use App\Http\Requests\OrderStatusRequest;
 use App\Http\Requests\PaymentStatusRequest;
 use App\Http\Requests\TableOrderTokenRequest;
+use App\Models\Coupon;
 
 class OrderService
 {
@@ -279,6 +280,19 @@ class OrderService
                     ]
                 );
 
+                $coupon_code = strtoupper(bin2hex(random_bytes(4)));
+
+                $coupon = Coupon::create([
+                    'code' => $coupon_code,
+                    'type' => 'percentage',
+                    'amount' => 5,
+                    'start_date' => date('Y-m-d'),
+                    'end_date' => date('Y-m-d', strtotime('+14 days')),
+                    'amount_left' => 100,
+                    'customer_type' => 'walkin',
+                    'status' => 'active'
+                ]);
+
                 $i            = 0;
                 $totalTax     = 0;
                 $itemsArray   = [];
@@ -324,6 +338,19 @@ class OrderService
                 $this->order->order_serial_no = date('dmy') . $this->order->id;
                 $this->order->total_tax       = $totalTax;
                 $this->order->save();
+                $this->order->coupon = $coupon;
+
+                $appliedCoupons = $request->appliedCoupons;
+                if (!blank($appliedCoupons)) {
+                    foreach ($appliedCoupons as $appliedCoupon) {
+                        $coupon = Coupon::where('id', $appliedCoupon['id'])->first();
+                        if ($coupon) {
+                            $coupon->amount_left = $coupon->amount_left - $coupon->amount;
+                            $coupon->status = 'inactive';
+                            $coupon->save();
+                        }
+                    }
+                }
             });
             return $this->order;
         } catch (Exception $exception) {
@@ -410,7 +437,7 @@ class OrderService
     /**
      * @throws Exception
      */
-    public function show(Order $order, $auth = false): Order|array
+    public function show(Order $order, $auth = false, $coupon = null): Order|array
     {
         try {
             if ($auth) {
@@ -420,6 +447,7 @@ class OrderService
                     return [];
                 }
             } else {
+                $order->coupon = $coupon;
                 return $order;
             }
         } catch (Exception $exception) {

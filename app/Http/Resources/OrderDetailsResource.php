@@ -47,6 +47,7 @@ class OrderDetailsResource extends JsonResource
             'table_name'                          => $this->diningTable?->name,
             'pos_payment_method'                  => $this->pos_payment_method,
             'pos_payment_note'                    => $this->pos_payment_note,
+            'coupon'                              => $this->coupon
         ];
     }
 }

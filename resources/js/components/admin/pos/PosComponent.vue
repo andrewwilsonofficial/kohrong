@@ -153,7 +153,7 @@
             </div>
             <div class="flex h-[38px] mt-2" v-if="carts.length > 0">
                 <input v-model="couponCode" type="text" :placeholder="$t('label.enter_coupon_code')"
-                    class="w-full h-full border px-3 border-[#EFF0F6]">
+                    class="w-full h-full border px-3 border-[#EFF0F6]" @keyup.enter="applyCoupon">
                 <button @click.prevent="applyCoupon" type="submit"
                     class="flex-shrink-0 w-16 h-full text-sm font-medium font-rubik capitalize ltr:rounded-tr-lg ltr:rounded-br-lg rtl:rounded-tl-lg rtl:rounded-bl-lg text-white bg-[#008BBA]">
                     {{ $t('button.apply') }}
@@ -319,7 +319,8 @@ export default {
             loading: {
                 isActive: false,
             },
-            selectedReceipts: 2, // Default selection
+            selectedReceipts: 2,
+            appliedCoupons: [],
             receiptOptions: [
                 { label: "1", value: 1 },
                 { label: "2", value: 2 },
@@ -344,7 +345,8 @@ export default {
                     pos_payment_note: '',
                     source: sourceEnum.POS,
                     address_id: null,
-                    items: []
+                    items: [],
+                    appliedCoupons: [],
                 }
             },
             props: {
@@ -614,16 +616,16 @@ export default {
                     this.checkoutProps.form.discount = parseFloat(+this.discount).toFixed(this.setting.site_digit_after_decimal_point);
                     this.$store.dispatch('posCart/discount', this.checkoutProps.form.discount).then().catch();
                 }
-
             } else {
                 if (this.discount > 100) {
                     this.discountErrorMessage = this.$t('message.discount_error_message');
                 } else {
-
                     this.checkoutProps.form.discount = parseFloat((this.subtotal * this.discount) / 100).toFixed(this.setting.site_digit_after_decimal_point);
                     this.$store.dispatch('posCart/discount', this.checkoutProps.form.discount).then().catch();
-
                 }
+            }
+            if (this.discount == 0) {
+                this.appliedCoupons = [];
             }
         },
         applyCoupon: function () {
@@ -637,10 +639,32 @@ export default {
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        this.checkoutProps.form.discount = parseFloat(xhr.response).toFixed(this.setting.site_digit_after_decimal_point);
-                        this.$store.dispatch('posCart/discount', this.checkoutProps.form.discount).then().catch();
-                    } else {
-                        alertService.error(xhr.response);
+                        let response = JSON.parse(xhr.response);
+                        if (response.status) {
+                            if (this.appliedCoupons.some(coupon => coupon.code === response.coupon.code)) {
+                                this.discountErrorMessage = this.$t('message.coupon_already_applied');
+                            } else {
+                                let totalDiscount = parseFloat(this.checkoutProps.form.discount) || 0;
+                                if (response.coupon.type === 'percentage') {
+                                    totalDiscount += parseFloat((this.subtotal * response.coupon.amount) / 100);
+                                } else {
+                                    totalDiscount += parseFloat(response.coupon.amount);
+                                }
+                                
+                                if (totalDiscount > (this.subtotal * 0.16)) {
+                                    this.discountErrorMessage = this.$t('message.discount_limit_exceeded');
+                                } else {
+                                    this.checkoutProps.form.discount = totalDiscount.toFixed(this.setting.site_digit_after_decimal_point);
+                                    this.$store.dispatch('posCart/discount', this.checkoutProps.form.discount).then().catch();
+                                    this.appliedCoupons.push(response.coupon);
+                                    this.couponCode = "";
+                                    this.$refs.couponCode.focus();
+                                    this.discountErrorMessage = "";
+                                }
+                            }
+                        } else {
+                            this.discountErrorMessage = this.$t('message.invalid_coupon');
+                        }
                     }
                     this.loading.isActive = false;
                 }
@@ -659,6 +683,7 @@ export default {
             this.checkoutProps.form.items = [];
             this.checkoutProps.form.pos_payment_note = this.checkoutProps.form.pos_payment_method === posPaymentMethodEnum.CASH ?
                 null : this.checkoutProps.form.pos_payment_note;
+            this.checkoutProps.form.appliedCoupons = this.appliedCoupons;
 
             if (!this.checkoutProps.form.token) {
                 alertService.error(this.$t('message.token_required'));
@@ -738,11 +763,12 @@ export default {
                     this.discountType = discountTypeEnum.PERCENTAGE;
                     this.checkoutProps.form.pos_payment_method = this.posPaymentMethodEnum.CASH;
                     this.checkoutProps.form.pos_payment_note = "";
+                    this.appliedCoupons = [];
 
                     this.$store.dispatch('posCart/resetCart').then(res => {
                         this.loading.isActive = false;
                     }).catch();
-                    this.$store.dispatch('posOrder/show', orderResponse.data.data.id).then(res => {
+                    this.$store.dispatch('posOrder/show', [orderResponse.data.data.id,orderResponse.data.data.coupon.id]).then(res => {
                         this.order = res.data.data;
                         this.loading.isActive = false;
                     }).catch((error) => {
@@ -764,6 +790,7 @@ export default {
                         });
                     }
                 });
+                this.discountErrorMessage = "";
             }).catch((err) => {
                 this.loading.isActive = false;
             });

@@ -69,7 +69,7 @@ use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController
 use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
 use App\Http\Controllers\Table\DiningTableController as TableDiningTableController;
 use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryController;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -394,12 +394,11 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
 
     Route::prefix('pos-order')->name('posOrder.')->group(function () {
         Route::get('/', [PosOrderController::class, 'index']);
-        Route::get('show/{order}', [PosOrderController::class, 'show']);
+        Route::get('show/{order}/{coupon?}', [PosOrderController::class, 'show']);
         Route::delete('/{order}', [PosOrderController::class, 'destroy']);
         Route::get('/export', [PosOrderController::class, 'export']);
         Route::post('/change-status/{order}', [PosOrderController::class, 'changeStatus']);
         Route::post('/change-payment-status/{order}', [PosOrderController::class, 'changePaymentStatus']);
-        Route::get('/check-coupon', [PosOrderController::class, 'checkCoupon']);
     });
 
     Route::prefix('table-order')->name('tableOrder.')->group(function () {
@@ -548,4 +547,10 @@ Route::prefix('table')->name('table.')->middleware(['installed', 'apiKey', 'loca
         Route::get('/show/{frontendOrder}', [TableOrderController::class, 'show']);
         Route::post('/', [TableOrderController::class, 'store']);
     });
+});
+
+Route::get('/generate-qrcode/{text}', function ($text) {
+    $qrCode = QrCode::format('png')->size(200)->generate($text);
+
+    return response($qrCode)->header('Content-type', 'image/png');
 });

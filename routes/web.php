@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PosOrderController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\RootController;
 use App\Http\Controllers\Installer\InstallerController;
@@ -41,6 +42,11 @@ Route::prefix('payment')->name('payment.')->middleware(['installed'])->group(fun
     Route::match(['get', 'post'], '/{paymentGateway:slug}/{order}/fail', [PaymentController::class, 'fail'])->name('fail');
     Route::match(['get', 'post'], '/{paymentGateway:slug}/{order}/cancel', [PaymentController::class, 'cancel'])->name('cancel');
     Route::get('/successful/{order}', [PaymentController::class, 'successful'])->name('successful');
+});
+Route::post('/check-coupon', [PosOrderController::class, 'checkCoupon'])->name('check-coupon');
+
+Route::get('/test', function () {
+    dd(route('check-coupon'));
 });
 
 Route::any('/{any}', [RootController::class, 'index'])->middleware(['installed'])->where(['any' => '.*']);

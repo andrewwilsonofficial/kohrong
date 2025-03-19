@@ -667,6 +667,9 @@
         "something_wrong": "Stimmt etwas nicht."
     },
     "message": {
+        "invalid_coupon": "Ungültiger Gutscheincode",
+        "discount_limit_exceeded": "Rabattlimit überschritten",
+        "coupon_already_applied": "Gutschein bereits angewendet",
         "pagination_label": "Anzeigen {from} Zu {to} von {total} einträge",
         "password_update": "Passwort erfolgreich aktualisiert.",
         "photo_update": "Foto erfolgreich aktualisiert.",
