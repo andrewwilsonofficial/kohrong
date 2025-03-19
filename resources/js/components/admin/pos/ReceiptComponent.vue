@@ -4,7 +4,7 @@
             <div class="modal-body">
                 <div class="flex flex-col justify-center items-center w-full hidden" id="qr-code">
                     <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon"
-                        class="w-full mb-2">
+                        class="w-1/2 mb-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
