@@ -3,8 +3,7 @@
         <div class="modal-dialog max-w-[340px] rounded-none" id="print" :dir="direction">
             <div class="modal-body">
                 <div class="flex flex-col justify-center items-center w-full hidden" id="qr-code">
-                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon"
-                        class="w-1/2 mb-2">
+                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-1/2 mb-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
@@ -55,7 +54,7 @@
                                         <h4 class="text-sm font-normal capitalize">{{ item.item_name }}</h4>
                                         <p class="text-xs leading-5 text-heading">{{
                                             item.total_without_tax_currency_price
-                                        }}
+                                            }}
                                         </p>
                                     </div>
                                     <p v-if="Object.keys(item.item_variations).length !== 0"
@@ -95,18 +94,18 @@
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.subtotal')
-                                    }}:
+                                        }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{
                                         order.subtotal_without_tax_currency_price
-                                    }}</td>
+                                        }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount')
-                                    }}:
+                                        }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{ order.discount_currency_price
-                                    }}
+                                        }}
                                     </td>
                                 </tr>
 
@@ -226,11 +225,11 @@ export default {
                     document.getElementById('other-receipt').classList.add('hidden');
                     setTimeout(() => {
                         window.print();
+                        clearInterval(printInterval);
+                        document.getElementById('qr-code').classList.add('hidden');
+                        document.getElementById('other-receipt').classList.remove('hidden');
+                        this.reset();
                     }, 500);
-                    clearInterval(printInterval);
-                    document.getElementById('qr-code').classList.add('hidden');
-                    document.getElementById('other-receipt').classList.remove('hidden');
-                    this.reset();
                 }
             }, 500);
         }
