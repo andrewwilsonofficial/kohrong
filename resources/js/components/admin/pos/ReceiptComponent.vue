@@ -6,13 +6,13 @@
                     <div class="text-center pb-3.5 border-b border-dashed border-gray-400">
                         <h4 class="text-2xl font-bold mb-1">{{ company.company_name }}</h4>
                     </div>
-                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-3/4 h-3/4">
+                    <h1 class="text-xl font-bold text-center mt-2">
+                        {{ coupon.amount }}% !
+                    </h1>
+                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-3/4 h-3/4 mt-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
-                    <h1 class="text-xl font-bold text-center">
-                        {{ coupon.amount }}% !
-                    </h1>
                     <h2 class="text-center">
                         Get a {{ coupon.amount }}% discount on your next order, this coupon is stackable up to 15%.
                     </h2>
