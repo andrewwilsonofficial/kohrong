@@ -223,9 +223,9 @@ export default {
                     // Then hide the receipt and print the qr code once
                     document.getElementById('qr-code').classList.remove('hidden');
                     document.getElementById('other-receipt').classList.add('hidden');
+                    clearInterval(printInterval);
                     setTimeout(() => {
                         window.print();
-                        clearInterval(printInterval);
                         document.getElementById('qr-code').classList.add('hidden');
                         document.getElementById('other-receipt').classList.remove('hidden');
                         this.reset();
