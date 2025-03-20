@@ -15,9 +15,9 @@
                         {{ coupon.code }}
                     </span>
                     <h2 class="text-center">
-                        {{ coupon.amount }}%, use up to 3 coupons at a time.
+                        {{ coupon.amount }}% OFF, use up to 3 coupons at a time.
                     </h2>
-                    <h2 class="text-center">
+                    <h2 class="text-center italic">
                         A photo version is accepted, please show this to the cashier.
                     </h2>
                     <div class="flex flex-col items-end">
