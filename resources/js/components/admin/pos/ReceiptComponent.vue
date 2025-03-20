@@ -9,7 +9,7 @@
                     <h1 class="text-xl font-bold text-center mt-2">
                         {{ coupon.amount }}% !
                     </h1>
-                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon"
+                    <img :src="`${coupon.barcode}`" alt="coupon" v-if="coupon"
                         class="w-3/4 h-3/4 mt-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
@@ -205,7 +205,7 @@ export default {
         },
         coupon: function () {
             const coupon = this.$store.getters['posOrder/coupon'];
-            return coupon ? coupon : { code: "NONE" };
+            return coupon ? coupon : { code: "NONE", barcode: "" };
         },
         direction: function () {
             return this.$store.getters['frontendLanguage/show'].display_mode === displayModeEnum.RTL ? 'rtl' : 'ltr';
