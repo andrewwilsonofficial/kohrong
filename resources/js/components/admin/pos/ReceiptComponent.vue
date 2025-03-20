@@ -9,12 +9,16 @@
                     <h1 class="text-xl font-bold text-center mt-2">
                         {{ coupon.amount }}% !
                     </h1>
-                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-3/4 h-3/4 mt-2">
+                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon"
+                        class="w-3/4 h-3/4 mt-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
                     <h2 class="text-center">
-                        Get a {{ coupon.amount }}% discount on your next order, this coupon is stackable up to 15%.
+                        {{ coupon.amount }}%, use up to 3 coupons at a time.
+                    </h2>
+                    <h2 class="text-center">
+                        A photo version is accepted, please show this to the cashier.
                     </h2>
                     <div class="flex flex-col items-end">
                         <h5 class="text-[8px] font-normal text-left w-[46px] leading-[10px]">
@@ -68,7 +72,7 @@
                                         <h4 class="text-sm font-normal capitalize">{{ item.item_name }}</h4>
                                         <p class="text-xs leading-5 text-heading">{{
                                             item.total_without_tax_currency_price
-                                        }}
+                                            }}
                                         </p>
                                     </div>
                                     <p v-if="Object.keys(item.item_variations).length !== 0"
@@ -108,18 +112,18 @@
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.subtotal')
-                                    }}:
+                                        }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{
                                         order.subtotal_without_tax_currency_price
-                                    }}</td>
+                                        }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount')
-                                    }}:
+                                        }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{ order.discount_currency_price
-                                    }}
+                                        }}
                                     </td>
                                 </tr>
 
@@ -228,19 +232,19 @@ export default {
             appService.modalHide();
         },
         autoPrint(totalPrint = 2) {
+            document.getElementById('qr-code').classList.remove('hidden');
+            document.getElementById('other-receipt').classList.add('hidden');
             let printCount = 0;
             const printInterval = setInterval(() => {
                 if (printCount < totalPrint) {
                     window.print();
                     printCount++;
                 } else {
-                    document.getElementById('qr-code').classList.remove('hidden');
-                    document.getElementById('other-receipt').classList.add('hidden');
                     clearInterval(printInterval);
+                    document.getElementById('qr-code').classList.add('hidden');
+                    document.getElementById('other-receipt').classList.remove('hidden');
                     setTimeout(() => {
                         window.print();
-                        document.getElementById('qr-code').classList.add('hidden');
-                        document.getElementById('other-receipt').classList.remove('hidden');
                         this.reset();
                     }, 500);
                 }
