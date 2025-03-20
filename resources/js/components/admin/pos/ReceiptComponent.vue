@@ -234,20 +234,18 @@ export default {
         autoPrint(totalPrint = 2) {
             document.getElementById('qr-code').classList.remove('hidden');
             document.getElementById('other-receipt').classList.add('hidden');
+            window.print();
+            document.getElementById('qr-code').classList.add('hidden');
+            document.getElementById('other-receipt').classList.remove('hidden');
             let printCount = 0;
             const printInterval = setInterval(() => {
-                if (printCount < totalPrint) {
-                    window.print();
-                    printCount++;
-                } else {
-                    clearInterval(printInterval);
-                    document.getElementById('qr-code').classList.add('hidden');
-                    document.getElementById('other-receipt').classList.remove('hidden');
-                    setTimeout(() => {
-                        window.print();
-                        this.reset();
-                    }, 500);
-                }
+            if (printCount < totalPrint) {
+                window.print();
+                printCount++;
+            } else {
+                clearInterval(printInterval);
+                this.reset();
+            }
             }, 500);
         }
     },
