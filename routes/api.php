@@ -69,7 +69,7 @@ use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController
 use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
 use App\Http\Controllers\Table\DiningTableController as TableDiningTableController;
 use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryController;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Milon\Barcode\DNS1D;
 
 /*
 |--------------------------------------------------------------------------
@@ -550,7 +550,8 @@ Route::prefix('table')->name('table.')->middleware(['installed', 'apiKey', 'loca
 });
 
 Route::get('/generate-qrcode/{text}', function ($text) {
-    $qrCode = QrCode::format('png')->size(200)->generate($text);
-
-    return response($qrCode)->header('Content-type', 'image/png');
+    $barcode = new DNS1D();
+    $barcodeData = $barcode->getBarcodePNG($text, 'C128');
+    $image = base64_decode($barcodeData);
+    return response($image)->header('Content-Type', 'image/png');
 });

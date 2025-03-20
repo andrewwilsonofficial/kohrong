@@ -3,13 +3,27 @@
         <div class="modal-dialog max-w-[340px] rounded-none" id="print" :dir="direction">
             <div class="modal-body">
                 <div class="flex flex-col justify-center items-center w-full hidden" id="qr-code">
-                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-1/2 mb-2">
+                    <div class="text-center pb-3.5 border-b border-dashed border-gray-400">
+                        <h4 class="text-2xl font-bold mb-1">{{ company.company_name }}</h4>
+                    </div>
+                    <img :src="`/api/generate-qrcode/${coupon.code}`" alt="coupon" v-if="coupon" class="w-3/4 h-3/4">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
+                    <h1 class="text-xl font-bold text-center">
+                        {{ coupon.amount }}% !
+                    </h1>
                     <h2 class="text-center">
                         Get a {{ coupon.amount }}% discount on your next order, this coupon is stackable up to 15%.
                     </h2>
+                    <div class="flex flex-col items-end">
+                        <h5 class="text-[8px] font-normal text-left w-[46px] leading-[10px]">
+                            {{ $t('label.powered_by') }}
+                        </h5>
+                        <h6 class="text-xs font-normal leading-4">
+                            Wilson Cloud LTD - Visit wilson-cloud.store
+                        </h6>
+                    </div>
                 </div>
                 <div id="other-receipt">
                     <div class="text-center pb-3.5 border-b border-dashed border-gray-400">
@@ -54,7 +68,7 @@
                                         <h4 class="text-sm font-normal capitalize">{{ item.item_name }}</h4>
                                         <p class="text-xs leading-5 text-heading">{{
                                             item.total_without_tax_currency_price
-                                            }}
+                                        }}
                                         </p>
                                     </div>
                                     <p v-if="Object.keys(item.item_variations).length !== 0"
@@ -94,18 +108,18 @@
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.subtotal')
-                                        }}:
+                                    }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{
                                         order.subtotal_without_tax_currency_price
-                                        }}</td>
+                                    }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-xs text-left py-0.5 uppercase text-heading">{{ $t('label.discount')
-                                        }}:
+                                    }}:
                                     </td>
                                     <td class="text-xs text-right py-0.5 text-heading">{{ order.discount_currency_price
-                                        }}
+                                    }}
                                     </td>
                                 </tr>
 
@@ -220,7 +234,6 @@ export default {
                     window.print();
                     printCount++;
                 } else {
-                    // Then hide the receipt and print the qr code once
                     document.getElementById('qr-code').classList.remove('hidden');
                     document.getElementById('other-receipt').classList.add('hidden');
                     clearInterval(printInterval);

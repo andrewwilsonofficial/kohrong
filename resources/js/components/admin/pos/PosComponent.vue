@@ -54,9 +54,14 @@
                     <span class="capitalize text-sm font-bold">{{ $t('button.add') }}</span>
                 </button>
             </div>
-            <div class="db-field">
+            <div class="db-field flex items-center">
                 <input class="db-field-control text-sm rounded-lg appearance-none text-heading border-[#D9DBE9]"
                     id="token" v-model="checkoutProps.form.token" :placeholder="$t('label.token_no')" />
+                <button @click="fillTokenWithTakeAway" type="button"
+                    class="ml-2 flex items-center justify-center gap-1.5 px-3 h-10 rounded-lg text-white bg-heading">
+                    <i class="lab lab-bag-2"></i>
+                    TA
+                </button>
             </div>
         </div>
         <table class="w-full">
@@ -811,6 +816,9 @@ export default {
             appService.modalHide();
             this.customerList(customerId);
         },
+        fillTokenWithTakeAway: function () {
+            this.checkoutProps.form.token = "Take Away";
+        }
     }
 }
 </script>
