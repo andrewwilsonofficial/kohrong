@@ -78,6 +78,7 @@
         "table_orders": "Tafelbestellingen"
     },
     "label": {
+        "print_coupon": "Gutschein drucken",
         "previous": "Vorherige",
         "next": "Nächste",
         "default": "Verzug",

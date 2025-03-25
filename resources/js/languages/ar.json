@@ -81,6 +81,7 @@
         "subscribers": "المشتركون"
     },
     "label": {
+        "print_coupon": "طباعة الكوبون",
         "previous": "السابق",
         "next": "التالي",
         "default": "الافتراضي",

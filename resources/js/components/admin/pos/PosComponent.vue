@@ -247,13 +247,21 @@
 
             <div class="flex items-center justify-center gap-6 mb-4" v-if="carts.length > 0">
                 <div class="flex flex-col items-center gap-2">
-                <span>{{ $t('label.select_number_of_receipts') }}</span>
+                    <span>{{ $t('label.select_number_of_receipts') }}</span>
                     <div class="flex gap-2">
                         <label v-for="option in receiptOptions" :key="option.value" class="flex items-center">
                             <input type="radio" :value="option.value" v-model="selectedReceipts" class="mr-1" />
                             {{ option.label }}
                         </label>
                     </div>
+                </div>
+            </div>
+            <div class="flex items-center justify-center gap-6 mb-4" v-if="carts.length > 0">
+                <div class="flex flex-col items-center gap-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" v-model="printCoupon" class="mr-1" />
+                        {{ $t('label.print_coupon') }}
+                    </label>
                 </div>
             </div>
             <div class="flex items-center justify-center gap-6" v-if="carts.length > 0">
@@ -325,6 +333,7 @@ export default {
                 isActive: false,
             },
             selectedReceipts: 2,
+            printCoupon: false,
             appliedCoupons: [],
             receiptOptions: [
                 { label: "1", value: 1 },
@@ -783,7 +792,7 @@ export default {
                     if (this.selectedReceipts !== 0) {
                         appService.modalShow('#receiptModal');
                         setTimeout(() => {
-                            this.$refs.receiptComponent.autoPrint(this.selectedReceipts);
+                            this.$refs.receiptComponent.autoPrint(this.selectedReceipts, this.printCoupon);
                             this.selectedReceipts = 2;
                         }, 500);
                     }

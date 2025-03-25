@@ -9,8 +9,7 @@
                     <h1 class="text-xl font-bold text-center mt-2">
                         {{ coupon.amount }}% !
                     </h1>
-                    <img :src="`${coupon.barcode}`" alt="coupon" v-if="coupon"
-                        class="w-3/4 h-3/4 mt-2">
+                    <img :src="`${coupon.barcode}`" alt="coupon" v-if="coupon" class="w-3/4 h-3/4 mt-2">
                     <span class="font-bold text-center mb-2">
                         {{ coupon.code }}
                     </span>
@@ -231,21 +230,26 @@ export default {
         reset: function () {
             appService.modalHide();
         },
-        autoPrint(totalPrint = 2) {
-            document.getElementById('qr-code').classList.remove('hidden');
-            document.getElementById('other-receipt').classList.add('hidden');
-            window.print();
-            document.getElementById('qr-code').classList.add('hidden');
-            document.getElementById('other-receipt').classList.remove('hidden');
+        autoPrint(totalPrint = 2, printCoupon = false) {
+            if (printCoupon) {
+                document.getElementById('qr-code').classList.remove('hidden');
+                document.getElementById('other-receipt').classList.add('hidden');
+                window.print();
+                document.getElementById('qr-code').classList.add('hidden');
+                document.getElementById('other-receipt').classList.remove('hidden');
+            } else {
+                document.getElementById('qr-code').classList.add('hidden');
+                document.getElementById('other-receipt').classList.remove('hidden');
+            }
             let printCount = 0;
             const printInterval = setInterval(() => {
-            if (printCount < totalPrint) {
-                window.print();
-                printCount++;
-            } else {
-                clearInterval(printInterval);
-                this.reset();
-            }
+                if (printCount < totalPrint) {
+                    window.print();
+                    printCount++;
+                } else {
+                    clearInterval(printInterval);
+                    this.reset();
+                }
             }, 500);
         }
     },

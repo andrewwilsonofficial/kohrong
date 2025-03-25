@@ -78,6 +78,7 @@
         "table_orders": "টেবিল অর্ডার"
     },
     "label": {
+        "print_coupon": "প্রিন্ট কুপন",
         "previous": "আগের",
         "next": "পরবর্তী",
         "default": "ডিফল্ট",
